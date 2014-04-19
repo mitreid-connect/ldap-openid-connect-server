@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>example-openid-connect-overlay</artifactId>
-    <groupId>org.example</groupId>
+    <artifactId>ldap-openid-connect-server</artifactId>
+    <groupId>edu.mit.kit</groupId>
     <version>1.1-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
-  <artifactId>my-openid-connect</artifactId>
+  <artifactId>ldap-openid-connect-server-webapp</artifactId>
   <packaging>war</packaging>
   <build>
     <plugins>

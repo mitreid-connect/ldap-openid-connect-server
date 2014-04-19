@@ -1,15 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.example</groupId>
-  <artifactId>example-openid-connect-overlay</artifactId>
   <packaging>pom</packaging>
   <version>1.1-SNAPSHOT</version>
-  <name>example-openid-connect-overlay</name>
+  <name>LDAP OpenID Connect Server</name>
 
   <modules>
     
-    <module>my-openid-connect</module>
+    <module>ldap-server-overlay</module>
   </modules>
 
   <dependencies>
@@ -37,7 +35,9 @@
   </properties>
 
   <build>
-    <finalName>my-openid-connect-server</finalName>
+    <finalName>ldap-openid-connect-server</finalName>
   </build>
 
+  <groupId>edu.mit.kit</groupId>
+  <artifactId>ldap-openid-connect-server</artifactId>
 </project>

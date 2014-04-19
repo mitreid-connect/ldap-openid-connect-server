@@ -1,3 +1,1 @@
-This is an example project showing how to set up a maven overlay for OpenID-Connect-Java-Server
-After cloning issue a 'git submodule update --init --recursive' command to set up the git submodules,
-then you should be able to run 'mvn package'
+This is a version of the MITREid Connect server that speaks to a backend LDAP system for its user information and authentication.

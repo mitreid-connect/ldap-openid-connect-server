@@ -50,7 +50,7 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 		@Override
 		public Object mapFromAttributes(Attributes attr) throws NamingException {
 
-			if (attr.get("uid") != null) {
+			if (attr.get("uid") == null) {
 				return null; // we can't go on if there's no UID to look up
 			}
 			

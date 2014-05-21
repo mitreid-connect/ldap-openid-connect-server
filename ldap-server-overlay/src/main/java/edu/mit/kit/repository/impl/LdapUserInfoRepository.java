@@ -19,6 +19,7 @@ import org.springframework.ldap.filter.Filter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 
 /**
  * Looks up the user information from an LDAP template and maps the results
@@ -113,13 +114,13 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 			
 			if (res.isEmpty()) {
 				// user not found, error
-				return null;
+				throw new IllegalArgumentException("User not found: " + username);
 			} else if (res.size() == 1) {
 				// exactly one user found, return them
 				return (UserInfo) res.get(0);
 			} else {
 				// more than one user found, error
-				return null;
+				throw new IllegalArgumentException("User not found: " + username);
 			}
 			
 		}
@@ -164,6 +165,8 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 	public UserInfo getByUsername(String username) {
 		try {
 			return cache.get(username);
+		} catch (UncheckedExecutionException ue) {
+			return null;
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 			return null;

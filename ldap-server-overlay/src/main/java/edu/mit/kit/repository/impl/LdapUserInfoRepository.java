@@ -16,6 +16,7 @@ import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.filter.Filter;
 
+import com.google.common.base.Strings;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -34,6 +35,8 @@ import com.google.common.util.concurrent.UncheckedExecutionException;
 public class LdapUserInfoRepository implements UserInfoRepository {
 
 	private LdapTemplate ldapTemplate;
+	
+	private String emailSuffix = "@example.com";
 	
 	public LdapTemplate getLdapTemplate() {
 		return ldapTemplate;
@@ -137,31 +140,6 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 	
 	
 	@Override
-	public UserInfo getBySubject(String sub) {
-		// TODO: right now the subject is the username, should probably change
-		
-		return getByUsername(sub);
-	}
-
-	@Override
-	public UserInfo save(UserInfo userInfo) {
-		// read-only repository, unimplemented
-		return userInfo;
-	}
-
-	@Override
-	public void remove(UserInfo userInfo) {
-		// read-only repository, unimplemented
-		
-	}
-
-	@Override
-	public Collection<? extends UserInfo> getAll() {
-		// return a copy of the currently cached users
-		return cache.asMap().values();
-	}
-
-	@Override
 	public UserInfo getByUsername(String username) {
 		try {
 			return cache.get(username);
@@ -171,6 +149,42 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	/**
+	 * Strip off the suffix defined in emailSuffix and use the rest as a username
+	 */
+	/* (non-Javadoc)
+	 * @see org.mitre.openid.connect.repository.UserInfoRepository#getByEmailAddress(java.lang.String)
+	 */
+	@Override
+	public UserInfo getByEmailAddress(String email) {
+		if (!Strings.isNullOrEmpty(email)) {
+			if (email.endsWith(getEmailSuffix())) {
+				String username = email.substring(0, email.length() - getEmailSuffix().length());
+				return getByUsername(username);
+			} else {
+				// email doesn't match, end
+				return null;
+			}
+		} else {
+			// email was null, end
+			return null;
+		}
+	}
+
+	/**
+	 * @return the emailSuffix
+	 */
+	public String getEmailSuffix() {
+		return emailSuffix;
+	}
+
+	/**
+	 * @param emailSuffix the emailSuffix to set
+	 */
+	public void setEmailSuffix(String emailSuffix) {
+		this.emailSuffix = emailSuffix;
 	}
 
 }
